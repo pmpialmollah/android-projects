@@ -4,7 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".ProductsFragment">
+    tools:context=".CustomerFragment">
 
 
     <TextView
@@ -13,7 +13,7 @@
         android:layout_height="wrap_content"
         android:gravity="center_horizontal"
         android:padding="10dp"
-        android:text="Products"
+        android:text="Customers"
         android:textColor="@color/dark_coffee"
         android:textSize="25sp"
         android:textStyle="bold"
@@ -48,23 +48,36 @@
 
 
     <androidx.recyclerview.widget.RecyclerView
-        android:id="@+id/productRecyclerView"
+        android:id="@+id/customerRecyclerView"
         android:layout_width="match_parent"
         android:layout_height="0dp"
+        android:layout_marginVertical="5dp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@id/searchCardView" />
 
-    <com.google.android.material.floatingactionbutton.FloatingActionButton
-        android:id="@+id/addProductButton"
+
+    <androidx.cardview.widget.CardView
+        android:id="@+id/addCustomer"
         android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_margin="30dp"
-        android:backgroundTint="@color/dark_coffee"
-        android:src="@drawable/add"
+        android:layout_height="50dp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:tint="@color/light" />
+        android:layout_margin="30dp"
+        app:cardCornerRadius="10dp"
+        app:cardBackgroundColor="@color/dark_coffee"
+        >
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Add customer"
+            android:layout_gravity="center"
+            android:textSize="15sp"
+            android:textColor="@color/light"
+            android:paddingHorizontal="10dp"
+            />
+
+    </androidx.cardview.widget.CardView>
 
 </androidx.constraintlayout.widget.ConstraintLayout>

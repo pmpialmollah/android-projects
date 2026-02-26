@@ -7,7 +7,6 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.graphics.Insets;
 import androidx.core.view.ViewCompat;
 import androidx.core.view.WindowInsetsCompat;
-import androidx.fragment.app.Fragment;
 
 import com.nsoft.mybakery.databinding.ActivityMainBinding;
 
@@ -16,12 +15,10 @@ public class MainActivity extends AppCompatActivity {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
-        binding = ActivityMainBinding.inflate(getLayoutInflater()); // my code ---------------------
-
-        // --------- initialize here ---------------------------------------------------------------
         super.onCreate(savedInstanceState);
         EdgeToEdge.enable(this);
-        setContentView(R.layout.activity_main);
+        binding = ActivityMainBinding.inflate(getLayoutInflater());             // my code
+        setContentView(binding.getRoot());                                      // my code
         ViewCompat.setOnApplyWindowInsetsListener(findViewById(R.id.main), (v, insets) -> {
             Insets systemBars = insets.getInsets(WindowInsetsCompat.Type.systemBars());
             v.setPadding(systemBars.left, systemBars.top, systemBars.right, v.getPaddingBottom());
@@ -31,19 +28,31 @@ public class MainActivity extends AppCompatActivity {
 
         getSupportFragmentManager().beginTransaction().replace(R.id.frameLayout, new HomeFragment()).commit();
 
-        binding.bottomNav.setOnNavigationItemSelectedListener(menuItem -> {
-            Fragment fragment = new HomeFragment();
+        binding.bottomNav.setOnItemSelectedListener(menuItem -> {
 
-            getSupportFragmentManager().beginTransaction().replace(R.id.frameLayout, fragment).commit();
+            int menuId = menuItem.getItemId();
+
+            if (menuId == R.id.menuHome) {
+                getSupportFragmentManager().beginTransaction().replace(R.id.frameLayout, new HomeFragment()).commit();
+            } else if (menuId == R.id.menuProducts) {
+                getSupportFragmentManager().beginTransaction().replace(R.id.frameLayout, new ProductsFragment()).commit();
+            } else if (menuId == R.id.menuCustomers) {
+                getSupportFragmentManager().beginTransaction().replace(R.id.frameLayout, new CustomerFragment()).commit();
+            } else {
+                getSupportFragmentManager().beginTransaction().replace(R.id.frameLayout, new ToolsFragment()).commit();
+            }
 
             return true;
         });
 
+
     }   // on create end here ----------------------------------------------------------------------
+
 
     @Override
     protected void onDestroy() {
         super.onDestroy();
         binding = null;
     }
+
 }   // main class end here -------------------------------------------------------------------------

@@ -1,42 +1,51 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<androidx.cardview.widget.CardView xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="wrap_content"
-    android:layout_height="wrap_content"
-    android:gravity="center_horizontal"
-    android:orientation="vertical"
-    android:padding="10dp">
+    android:layout_height="125dp"
+    android:layout_margin="10dp"
+    app:cardBackgroundColor="@color/soft_pink"
+    app:cardCornerRadius="5dp">
 
-    <androidx.cardview.widget.CardView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        app:cardCornerRadius="5dp">
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:gravity="center"
+        android:orientation="vertical"
+        android:padding="10dp">
+
+        <androidx.cardview.widget.CardView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            app:cardCornerRadius="5dp">
+
+            <TextView
+                android:layout_width="50dp"
+                android:layout_height="50dp"
+                android:background="@color/light_coffee"
+                android:gravity="center"
+                android:text="12"
+                android:textColor="@color/light"
+                android:textSize="20sp"
+                android:textStyle="bold" />
+
+        </androidx.cardview.widget.CardView>
 
         <TextView
-            android:layout_width="50dp"
-            android:layout_height="50dp"
-            android:background="@color/light_coffee"
-            android:gravity="center"
-            android:text="12"
-            android:textColor="@color/light"
-            android:textSize="20sp"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="5dp"
+            android:text="Cake"
+            android:textColor="@color/dark_coffee"
+            android:textSize="18sp" />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="৳1,800"
+            android:textColor="@color/dark_coffee"
+            android:textSize="18sp"
             android:textStyle="bold" />
 
-    </androidx.cardview.widget.CardView>
-
-    <TextView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="Cake"
-        android:textColor="@color/dark_coffee"
-        android:textSize="18sp" />
-
-    <TextView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="৳18"
-        android:textColor="@color/dark_coffee"
-        android:textSize="18sp"
-        android:textStyle="bold" />
-
-</LinearLayout>
+    </LinearLayout>
+</androidx.cardview.widget.CardView>
