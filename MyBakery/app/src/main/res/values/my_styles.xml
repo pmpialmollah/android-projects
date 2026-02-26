@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <style name="MyActiveIndicator"
+        parent="Widget.Material3.BottomNavigationView.ActiveIndicator">
+
+        <item name="android:color">@color/dark_blue</item>
+        <item name="android:shape">rectangle</item>
+    </style>
+
+</resources>
