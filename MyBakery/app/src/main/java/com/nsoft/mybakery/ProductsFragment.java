@@ -3,6 +3,8 @@ package com.nsoft.mybakery;
 import android.app.AlertDialog;
 import android.database.Cursor;
 import android.os.Bundle;
+import android.text.Editable;
+import android.text.TextWatcher;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -47,7 +49,7 @@ public class ProductsFragment extends Fragment {
                         .setMessage("Do you really want to delete this item?")
                         .setPositiveButton("Yes", (dialog, which) -> {
                             dbHelper.deleteProductById(id);
-                            getData();
+                            getAllProducts();
 
                         })
                         .setNegativeButton("No", (dialog, which) -> {
@@ -57,7 +59,7 @@ public class ProductsFragment extends Fragment {
             }
         }, new ProductRecyclerViewAdapter.LongClickListener() {
             @Override
-            public void onLongClickListener(int id) {
+            public void onLongClickListener(Product product) {
                 View updateDialogView = LayoutInflater.from(getContext()).inflate(R.layout.update_product_dialog, null, false);
                 AlertDialog.Builder dialogBuilder = new AlertDialog.Builder(getContext());
                 dialogBuilder.setView(updateDialogView);
@@ -73,33 +75,21 @@ public class ProductsFragment extends Fragment {
                 Button updateButton = updateDialogView.findViewById(R.id.updateDialogUpdateButton);
                 Button cancelButton = updateDialogView.findViewById(R.id.updateDialogCancelButton);
 
-                Cursor cursor = dbHelper.getProductById(id);
 
-                if (cursor != null && cursor.moveToFirst()) {
-                    int productId = cursor.getInt(0);
-                    String image = cursor.getString(1);
-                    String productName = cursor.getString(2);
-                    String productPrice = cursor.getString(3);
+                productNameEditText.setText(product.getName());
+                productPriceEditText.setText(product.getPrice());
 
-                    productNameEditText.setText(productName);
-                    productPriceEditText.setText(productPrice);
-                    cursor.close();
+                updateButton.setOnClickListener(v -> {
 
-                    updateButton.setOnClickListener(v -> {
+                    String updatedImage = "";
+                    String updatedName = productNameEditText.getText().toString().trim();
+                    String updatedPrice = productPriceEditText.getText().toString().trim();
 
-                        String updatedImage = "";
-                        String updatedName = productNameEditText.getText().toString().trim();
-                        String updatedPrice = productPriceEditText.getText().toString().trim();
+                    dbHelper.updateProduct(updatedImage, updatedName, updatedPrice, product.getId());
 
-                        dbHelper.updateProduct(updatedImage, updatedName, updatedPrice, productId);
-
-                        updateDialog.dismiss();
-                        getData();
-                    });
-
-                } else if (cursor != null) {
-                    cursor.close();
-                }
+                    updateDialog.dismiss();
+                    getAllProducts();
+                });
 
                 cancelButton.setOnClickListener(v -> {
                     updateDialog.dismiss();
@@ -109,7 +99,7 @@ public class ProductsFragment extends Fragment {
             }
         });
 
-        getData();
+        getAllProducts();
 
         binding.productRecyclerView.addItemDecoration(new ProductItemSpacingDecorator());
         binding.productRecyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
@@ -141,17 +131,34 @@ public class ProductsFragment extends Fragment {
                     Toast.makeText(getContext(), "Please fill all boxes.", Toast.LENGTH_SHORT).show();
                 } else {
                     dbHelper.addProduct("profile", productName, productPrice);
-                    getData();
+                    getAllProducts();
                     alertDialog.dismiss();
                 }
             });
 
         });
 
+        binding.searchEditText.addTextChangedListener(new TextWatcher() {
+            @Override
+            public void afterTextChanged(Editable s) {
+
+            }
+
+            @Override
+            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+
+            }
+
+            @Override
+            public void onTextChanged(CharSequence s, int start, int before, int count) {
+                getProductByName(s.toString());
+            }
+        });
+
         // -----------------------------------------------------------------------------------------
     }
 
-    private void getData() {
+    private void getAllProducts() {
 
         Cursor allProductsCursor = dbHelper.getAllProducts();
         if (allProductsCursor != null && allProductsCursor.getCount() > 0) {
@@ -174,11 +181,32 @@ public class ProductsFragment extends Fragment {
         }
     }
 
+    private void getProductByName(String name) {
+        Cursor cursor = dbHelper.getProductByName(name);
+        if (cursor != null && cursor.getCount() > 0) {
+            productList.clear();
+            while (cursor.moveToNext()) {
+                int id = cursor.getInt(0);
+                String productImage = cursor.getString(1);
+                String productName = cursor.getString(2);
+                String productPrice = cursor.getString(3);
+
+                productList.add(new Product(id, productImage, productName, productPrice));
+            }
+            myAdapter.notifyDataSetChanged();
+        } else {
+            if (cursor != null) {
+                cursor.close();
+            }
+            Toast.makeText(getContext(), "No product found!", Toast.LENGTH_SHORT).show();
+        }
+    }
+
     @Override
     public void onResume() {
         super.onResume();
 
-        getData();
+        getAllProducts();
 
     }
 }

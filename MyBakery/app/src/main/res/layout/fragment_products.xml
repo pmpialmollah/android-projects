@@ -40,6 +40,8 @@
             android:layout_height="wrap_content"
             android:background="@android:color/transparent"
             android:hint="Search"
+            android:inputType="text"
+            android:maxLines="1"
             android:padding="15dp"
             android:textColor="@color/dark_coffee"
             android:textColorHint="@color/light_coffee" />

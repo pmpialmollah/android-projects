@@ -4,6 +4,7 @@ import android.content.Context;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
+import android.widget.Toast;
 
 import androidx.annotation.Nullable;
 
@@ -58,10 +59,44 @@ public class DBHelper extends SQLiteOpenHelper {
         db.execSQL("DELETE FROM products_table WHERE id = '" + position + "';");
     }
 
-    public Cursor getProductById(int id) {
+    public Cursor getProductByName(String name) {
         SQLiteDatabase db = this.getReadableDatabase();
-        Cursor cursor = db.rawQuery("SELECT * FROM products_table WHERE id = '" + id + "';", null);
+        Cursor cursor = db.rawQuery("SELECT * FROM products_table WHERE name LIKE ? ORDER BY name;", new String[]{"%" + name + "%"}, null);
         return cursor;
+    }
+
+
+    public void addCustomer(String profile, String name, String address, String number) {
+        SQLiteDatabase db = this.getWritableDatabase();
+        db.execSQL(String.format("INSERT INTO customers_table (profile, name, address, number) VALUES ('%s', '%s', '%s', '%s');", profile, name, address, number));
+        Toast.makeText(context, "Customer inserted...", Toast.LENGTH_SHORT).show();
+    }
+
+    public Cursor getAllCustomers() {
+        SQLiteDatabase db = this.getReadableDatabase();
+        Cursor cursor = db.rawQuery("SELECT * FROM customers_table ORDER BY name;", null);
+        return cursor;
+    }
+
+    public int getCustomerCount() {
+        int totalCustomers = getAllCustomers().getCount();
+        return totalCustomers;
+    }
+
+    public Cursor getCustomerByName(String name) {
+        SQLiteDatabase db = this.getReadableDatabase();
+        Cursor cursor = db.rawQuery("SELECT * FROM customers_table WHERE name LIKE ? ORDER BY name;", new String[]{"%" + name + "%"}, null);
+        return cursor;
+    }
+
+    public void deleteCustomerById(int id) {
+        SQLiteDatabase db = this.getWritableDatabase();
+        db.execSQL(String.format("DELETE FROM customers_table WHERE id = %s", id));
+    }
+
+    public void updateCustomer(String profile, String name, String address, String number, int id) {
+        SQLiteDatabase db = this.getWritableDatabase();
+        db.execSQL(String.format("UPDATE customers_table SET profile = '%s', name = '%s', address = '%s', number = '%s' WHERE id = '%s'", profile, name, address, number, id));
     }
 
 }

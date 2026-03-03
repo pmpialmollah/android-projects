@@ -58,7 +58,7 @@ public class ProductRecyclerViewAdapter extends RecyclerView.Adapter<ProductRecy
         });
 
         holder.itemView.setOnLongClickListener(v -> {
-            longClickListener.onLongClickListener(id);
+            longClickListener.onLongClickListener(product);
             return true;
         });
     }
@@ -73,7 +73,7 @@ public class ProductRecyclerViewAdapter extends RecyclerView.Adapter<ProductRecy
     }
 
     public interface LongClickListener {
-        void onLongClickListener(int position);
+        void onLongClickListener(Product product);
     }
 
 }
