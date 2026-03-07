@@ -2,7 +2,9 @@
     <!-- Base application theme. -->
     <style name="Base.Theme.SQLiteApp" parent="Theme.Material3.DayNight.NoActionBar">
         <!-- Customize your light theme here. -->
-        <!-- <item name="colorPrimary">@color/my_light_primary</item> -->
+
+        <!-- ইন্ডিকেটর কালার পরিবর্তন করার জন্য নিচের লাইনটি -->
+        <item name="colorContainer">@color/bottom_nav_indicator</item>
     </style>
 
     <style name="Theme.SQLiteApp" parent="Base.Theme.SQLiteApp" />
