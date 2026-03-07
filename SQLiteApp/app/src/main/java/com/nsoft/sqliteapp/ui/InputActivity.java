@@ -1,4 +1,4 @@
-package com.nsoft.sqliteapp;
+package com.nsoft.sqliteapp.ui;
 
 import android.os.Bundle;
 import android.widget.Toast;
@@ -8,13 +8,16 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.graphics.Insets;
 import androidx.core.view.ViewCompat;
 import androidx.core.view.WindowInsetsCompat;
+import androidx.lifecycle.ViewModelProvider;
 
+import com.nsoft.sqliteapp.R;
 import com.nsoft.sqliteapp.databinding.ActivityInputBinding;
+import com.nsoft.sqliteapp.viewmodel.DataViewModel;
 
 public class InputActivity extends AppCompatActivity {
     private ActivityInputBinding binding;
-    DatabaseHelper databaseHelper;
-    public boolean isExpense;
+    private boolean isExpense;
+    private DataViewModel dataViewModel;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -29,33 +32,43 @@ public class InputActivity extends AppCompatActivity {
             v.setPadding(systemBars.left, systemBars.top, systemBars.right, systemBars.bottom);
             return insets;
         });
-
+        // -----------------------------------------------------------------------------------------
         isExpense = getIntent().getBooleanExtra("isExpense", false);
+        dataViewModel = new ViewModelProvider(this).get(DataViewModel.class);
 
-        databaseHelper = new DatabaseHelper(this);
 
         if (isExpense) {
             binding.inputTitle.setText("Add Expense");
             binding.addButton.setText("Add Expense");
 
             binding.addButton.setOnClickListener(v -> {
-                double amount = Double.parseDouble(binding.amountEditText.getText().toString().trim());
+                String amountString = binding.amountEditText.getText().toString().trim();
                 String reason = binding.reasonEditText.getText().toString().trim();
 
-                databaseHelper.addExpense(amount, reason);
+                if (amountString.isEmpty() && reason.isEmpty()) {
+                    Toast.makeText(this, "Please fill all field.", Toast.LENGTH_SHORT).show();
+                } else {
+                    double amount = Double.parseDouble(amountString);
+                    dataViewModel.addExpense(amount, reason);
+                    Toast.makeText(this, "Expense added", Toast.LENGTH_SHORT).show();
+                }
 
-                Toast.makeText(this, "Expense added", Toast.LENGTH_SHORT).show();
             });
         } else {
-            binding.inputTitle.setText("Add Income");
-            binding.addButton.setText("Add Income");
+            binding.inputTitle.setText("Add ExpenseModel");
+            binding.addButton.setText("Add ExpenseModel");
 
             binding.addButton.setOnClickListener(v -> {
-                double amount = Double.parseDouble(binding.amountEditText.getText().toString().trim());
+                String amountString = binding.amountEditText.getText().toString().trim();
                 String reason = binding.reasonEditText.getText().toString().trim();
-                databaseHelper.addIncome(amount, reason);
 
-                Toast.makeText(this, "Income added", Toast.LENGTH_SHORT).show();
+                if (amountString.isEmpty() && reason.isEmpty()) {
+                    Toast.makeText(this, "Please fill all field.", Toast.LENGTH_SHORT).show();
+                } else {
+                    double amount = Double.parseDouble(amountString);
+                    dataViewModel.addIncome(amount, reason);
+                    Toast.makeText(this, "Expense added", Toast.LENGTH_SHORT).show();
+                }
             });
 
         }

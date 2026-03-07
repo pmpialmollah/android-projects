@@ -1,4 +1,4 @@
-package com.nsoft.sqliteapp;
+package com.nsoft.sqliteapp.helpers;
 
 import java.text.SimpleDateFormat;
 import java.util.Date;

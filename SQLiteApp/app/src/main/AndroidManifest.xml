@@ -12,13 +12,13 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.SQLiteApp">
         <activity
-            android:name=".ShowActivity"
+            android:name="com.nsoft.sqliteapp.ui.ShowActivity"
             android:exported="false" />
         <activity
-            android:name=".InputActivity"
+            android:name="com.nsoft.sqliteapp.ui.InputActivity"
             android:exported="false" />
         <activity
-            android:name=".MainActivity"
+            android:name="com.nsoft.sqliteapp.ui.MainActivity"
             android:exported="true">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />

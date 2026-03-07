@@ -1,30 +1,36 @@
-package com.nsoft.sqliteapp;
+package com.nsoft.sqliteapp.adapters;
 
-import android.app.Activity;
 import android.app.AlertDialog;
+import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.nsoft.sqliteapp.R;
+import com.nsoft.sqliteapp.model.ExpenseModel;
+
 import java.util.ArrayList;
-import java.util.HashMap;
+import java.util.List;
 
 public class MyAdapter extends RecyclerView.Adapter<MyAdapter.MyViewHolder> {
-    private Activity activity;
-    private ArrayList<HashMap<String, String>> allData;
-    private DatabaseHelper databaseHelper;
     private OnclickCallback onclickCallback;
 
-    public MyAdapter(Activity activity, ArrayList<HashMap<String, String>> allData, OnclickCallback onclickCallback) {
-        this.activity = activity;
-        this.allData = allData;
-        databaseHelper = new DatabaseHelper(activity);
+    private List<ExpenseModel> expenseModelList = new ArrayList<>();
+
+    public void setExpenseModelList(List<ExpenseModel> expenseModelList) {
+        this.expenseModelList = expenseModelList;
+        notifyDataSetChanged();
+    }
+
+    public MyAdapter(OnclickCallback onclickCallback) {
         this.onclickCallback = onclickCallback;
     }
+
 
     public class MyViewHolder extends RecyclerView.ViewHolder {
         TextView amountTextView, reasonTextView, timeTextView;
@@ -42,18 +48,19 @@ public class MyAdapter extends RecyclerView.Adapter<MyAdapter.MyViewHolder> {
     @NonNull
     @Override
     public MyViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
-        View myView = activity.getLayoutInflater().inflate(R.layout.item_layout, parent, false);
+        View myView = LayoutInflater.from(parent.getContext()).inflate(R.layout.item_layout, parent, false);
         return new MyViewHolder(myView);
     }
 
     @Override
     public void onBindViewHolder(@NonNull MyViewHolder holder, int position) {
-        HashMap<String, String> data = allData.get(position);
-        holder.amountTextView.setText(data.get("amount"));
-        holder.reasonTextView.setText(data.get("reason"));
-        holder.timeTextView.setText("Time: " + data.get("time"));
+        ExpenseModel expenseModel = expenseModelList.get(position);
 
-        String type = data.get("type");
+        holder.amountTextView.setText("" + expenseModel.getAmount());
+        holder.reasonTextView.setText(expenseModel.getReason());
+        holder.timeTextView.setText("Time: " + expenseModel.getTime());
+
+        String type = expenseModel.getType();
         if (type.equals("expense")) {
             holder.typeImageView.setImageResource(R.drawable.chevron_down_64);
         } else {
@@ -61,11 +68,12 @@ public class MyAdapter extends RecyclerView.Adapter<MyAdapter.MyViewHolder> {
         }
 
         holder.itemView.setOnLongClickListener(v -> {
-            new AlertDialog.Builder(activity)
+            new AlertDialog.Builder(v.getContext())
                     .setTitle("Confirm delete")
                     .setMessage("Do you really want to delete this item?")
                     .setPositiveButton("Yes", (dialog, which) -> {
-                        onclickCallback.onClickListener(Integer.parseInt(data.get("id")));
+                        Toast.makeText(v.getContext(), "Done.", Toast.LENGTH_SHORT).show();
+                        dialog.dismiss();
                     })
                     .setNegativeButton("No", (dialog, which) -> {
                         dialog.dismiss();
@@ -77,10 +85,10 @@ public class MyAdapter extends RecyclerView.Adapter<MyAdapter.MyViewHolder> {
 
     @Override
     public int getItemCount() {
-        return allData.size();
+        return expenseModelList.size();
     }
 
-    public interface OnclickCallback{
+    public interface OnclickCallback {
         void onClickListener(int id);
     }
 

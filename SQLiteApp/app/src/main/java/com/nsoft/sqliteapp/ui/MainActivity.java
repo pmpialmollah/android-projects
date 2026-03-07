@@ -1,27 +1,26 @@
-package com.nsoft.sqliteapp;
+package com.nsoft.sqliteapp.ui;
 
 import android.content.Intent;
-import android.database.Cursor;
 import android.os.Bundle;
+import android.widget.Toast;
 
 import androidx.activity.EdgeToEdge;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.graphics.Insets;
 import androidx.core.view.ViewCompat;
 import androidx.core.view.WindowInsetsCompat;
+import androidx.lifecycle.ViewModelProvider;
 import androidx.recyclerview.widget.LinearLayoutManager;
 
+import com.nsoft.sqliteapp.R;
+import com.nsoft.sqliteapp.adapters.MyAdapter;
 import com.nsoft.sqliteapp.databinding.ActivityMainBinding;
-
-import java.util.ArrayList;
-import java.util.HashMap;
+import com.nsoft.sqliteapp.viewmodel.DataViewModel;
 
 public class MainActivity extends AppCompatActivity {
     private ActivityMainBinding binding;
-    private DatabaseHelper databaseHelper;
-    private ArrayList<HashMap<String, String>> allData = new ArrayList<>();
-    private MyFunctionClasses myFunctionClasses;
     private MyAdapter myAdapter;
+    private DataViewModel dataViewModel;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -36,16 +35,20 @@ public class MainActivity extends AppCompatActivity {
             v.setPadding(systemBars.left, systemBars.top, systemBars.right, systemBars.bottom);
             return insets;
         });
+        // -----------------------------------------------------------------------------------------
+        dataViewModel = new ViewModelProvider(this).get(DataViewModel.class);
 
-        databaseHelper = new DatabaseHelper(this);
-        myFunctionClasses = new MyFunctionClasses();
-        myAdapter = new MyAdapter(this, allData, new MyAdapter.OnclickCallback() {
-            @Override
-            public void onClickListener(int id) {
-                databaseHelper.deleteItemById(id);
-                updateUI();
-            }
+        myAdapter = new MyAdapter(id -> {
+            Toast.makeText(this, "Item: " + id, Toast.LENGTH_SHORT).show();
         });
+
+        binding.dashboardRecyclerView.setAdapter(myAdapter);
+        binding.dashboardRecyclerView.setLayoutManager(new LinearLayoutManager(this));
+
+        dataViewModel.getAllData().observe(this, expenseModelList -> {
+            myAdapter.setExpenseModelList(expenseModelList);
+        });
+
 
         binding.addIncome.setOnClickListener(v -> {
             Intent myIntent = new Intent(MainActivity.this, InputActivity.class);
@@ -71,11 +74,6 @@ public class MainActivity extends AppCompatActivity {
             startActivity(myIntent);
         });
 
-        updateUI();
-
-        binding.dashboardRecyclerView.setAdapter(myAdapter);
-        binding.dashboardRecyclerView.setLayoutManager(new LinearLayoutManager(this));
-
 
     }
     // on create end here ==========================================================================
@@ -83,44 +81,13 @@ public class MainActivity extends AppCompatActivity {
     @Override
     protected void onResume() {
         super.onResume();
+        double totalIncome = dataViewModel.getTotalIncome();
+        double totalExpense = dataViewModel.getTotalExpense();
+        double total = totalIncome - totalExpense;
 
-        updateUI();
+        binding.tvTotal.setText(total + " BDT.");
+        binding.tvTotalIncome.setText(totalIncome + " BDT.");
+        binding.tvTotalExpense.setText(totalExpense + " BDT.");
 
-    }
-
-    private void updateUI(){
-        Cursor cursor = databaseHelper.getAllData();
-        if (cursor != null && cursor.getCount() > 0) {
-            allData.clear();
-            while (cursor.moveToNext()){
-                HashMap<String, String> hashMap = new HashMap<>();
-
-                int id = cursor.getInt(0);
-                String type = cursor.getString(1);
-                double amount = cursor.getDouble(2);
-                String reason = cursor.getString(3);
-                long timeStamp = cursor.getLong(4);
-
-                String formattedDateTime = myFunctionClasses.timeStampToFormattedDateTime(timeStamp);
-
-                hashMap.put("id", String.valueOf(id));
-                hashMap.put("type", type);
-                hashMap.put("amount", String.valueOf(amount));
-                hashMap.put("reason", reason);
-                hashMap.put("time", formattedDateTime);
-
-                allData.add(hashMap);
-            }
-            myAdapter.notifyDataSetChanged();
-        }
-
-        double totalIncome = databaseHelper.getTotalIncome();
-        binding.totalIncomeTextView.setText("income: " + totalIncome + " BDT.");
-
-        double totalExpense = databaseHelper.getTotalExpense();
-        binding.totalExpenseView.setText("expense: " + totalExpense + " BDT.");
-
-        double total = databaseHelper.getTotal();
-        binding.totalTextView.setText(total + " BDT.");
     }
 }
