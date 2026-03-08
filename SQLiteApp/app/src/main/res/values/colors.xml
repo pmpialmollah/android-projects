@@ -7,4 +7,10 @@
     <color name="gray">#8E977D</color>
     <color name="light">#ECE7D1</color>
     <color name="dark_light">#DBCEA5</color>
+
+    <color name="light_blue">#75B1FA</color>
+    <color name="dark_blue">#1842C1</color>
+
+    <color name="dark_green">#239e02</color>
+    <color name="dark_red">#9e0202</color>
 </resources>

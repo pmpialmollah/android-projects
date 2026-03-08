@@ -20,16 +20,26 @@ public class DataRepository extends SQLiteOpenHelper {
     private static final String TAG = "My_DATABASE";
     private static final String DB_NAME = "MY_DATABASE";
     private static final int DB_VERSION = 1;
-    private MutableLiveData<List<ExpenseModel>> allLiveData = new MutableLiveData<>();
-    private MutableLiveData<List<ExpenseModel>> individualLiveData = new MutableLiveData<>();
-    private double totalIncome = 0;
-    private double totalExpense = 0;
+    
+    private static DataRepository instance;
+    
+    private final MutableLiveData<List<ExpenseModel>> allLiveData = new MutableLiveData<>();
+    private final MutableLiveData<List<ExpenseModel>> individualLiveData = new MutableLiveData<>();
+    private final MutableLiveData<Double> totalIncomeLiveData = new MutableLiveData<>();
+    private final MutableLiveData<Double> totalExpenseLiveData = new MutableLiveData<>();
 
-    public DataRepository(@Nullable Context context) {
+    private DataRepository(@Nullable Context context) {
         super(context, DB_NAME, null, DB_VERSION);
         fetchAllData();
         fetchTotalIncome();
         fetchTotalExpense();
+    }
+    
+    public static synchronized DataRepository getInstance(Context context) {
+        if (instance == null) {
+            instance = new DataRepository(context.getApplicationContext());
+        }
+        return instance;
     }
 
     @Override
@@ -55,6 +65,7 @@ public class DataRepository extends SQLiteOpenHelper {
         db.insert("allExpenseIncome", null, conval);
 
         fetchTotalIncome();
+        fetchAllData();
     }
 
     public void addExpense(double amount, String reason) {
@@ -69,6 +80,7 @@ public class DataRepository extends SQLiteOpenHelper {
         db.insert("allExpenseIncome", null, conval);
 
         fetchTotalExpense();
+        fetchAllData();
     }
 
     public void fetchTotalIncome() {
@@ -78,12 +90,13 @@ public class DataRepository extends SQLiteOpenHelper {
         if (cursor.moveToFirst()) {
             double total = cursor.getDouble(0);
             Log.d(TAG, "getTotalIncome: " + total);
-            totalIncome = total;
+            totalIncomeLiveData.setValue(total);
         }
+        cursor.close();
     }
 
-    public double getTotalIncome() {
-        return totalIncome;
+    public LiveData<Double> getTotalIncome() {
+        return totalIncomeLiveData;
     }
 
     public void fetchTotalExpense() {
@@ -93,12 +106,13 @@ public class DataRepository extends SQLiteOpenHelper {
         if (cursor.moveToFirst()) {
             double total = cursor.getDouble(0);
             Log.d(TAG, "getTotalExpense: " + total);
-            totalExpense = total;
+            totalExpenseLiveData.setValue(total);
         }
+        cursor.close();
     }
 
-    public double getTotalExpense() {
-        return totalExpense;
+    public LiveData<Double> getTotalExpense() {
+        return totalExpenseLiveData;
     }
 
     public Cursor queryIndividualData(String type) {
@@ -115,15 +129,17 @@ public class DataRepository extends SQLiteOpenHelper {
 
     public void deleteItemById(int id) {
         SQLiteDatabase db = this.getWritableDatabase();
-        db.execSQL("DELETE FROM allExpenseIncome WHERE id = '" + id + "'");
+        db.delete("allExpenseIncome", "id=?", new String[]{String.valueOf(id)});
+        fetchAllData();
+        fetchTotalIncome();
+        fetchTotalExpense();
     }
 
     private void fetchAllData() {
         Cursor individualData = queryAllData();
 
-        if (individualData != null && individualData.getCount() > 0) {
-
-            List<ExpenseModel> expenseModelList = new ArrayList<>();
+        List<ExpenseModel> expenseModelList = new ArrayList<>();
+        if (individualData != null) {
             while (individualData.moveToNext()) {
                 int id = individualData.getInt(0);
                 String type = individualData.getString(1);
@@ -133,10 +149,9 @@ public class DataRepository extends SQLiteOpenHelper {
 
                 expenseModelList.add(new ExpenseModel(type, id, amount, reason, time));
             }
-
-            allLiveData.setValue(expenseModelList);
-
+            individualData.close();
         }
+        allLiveData.setValue(expenseModelList);
     }
 
     public LiveData<List<ExpenseModel>> getAllData() {
@@ -146,9 +161,8 @@ public class DataRepository extends SQLiteOpenHelper {
     private void fetchIndividualData(String type) {
         Cursor individualData = queryIndividualData(type);
 
-        if (individualData != null && individualData.getCount() > 0) {
-
-            List<ExpenseModel> expenseModelList = new ArrayList<>();
+        List<ExpenseModel> expenseModelList = new ArrayList<>();
+        if (individualData != null) {
             while (individualData.moveToNext()) {
                 int id = individualData.getInt(0);
                 String expenseType = individualData.getString(1);
@@ -158,11 +172,9 @@ public class DataRepository extends SQLiteOpenHelper {
 
                 expenseModelList.add(new ExpenseModel(expenseType, id, amount, reason, time));
             }
-
-            individualLiveData.setValue(expenseModelList);
-
+            individualData.close();
         }
-
+        individualLiveData.setValue(expenseModelList);
     }
 
     public LiveData<List<ExpenseModel>> getIndividualData(String type) {

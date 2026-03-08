@@ -13,13 +13,11 @@ import java.util.List;
 
 public class DataViewModel extends AndroidViewModel {
 
-    private DataRepository dataRepository;
+    private final DataRepository dataRepository;
 
     public DataViewModel(@NonNull Application application) {
         super(application);
-        if (dataRepository == null) {
-            dataRepository = new DataRepository(application);
-        }
+        dataRepository = DataRepository.getInstance(application);
     }
 
     public void addIncome(double amount, String reason) {
@@ -38,11 +36,11 @@ public class DataViewModel extends AndroidViewModel {
         return dataRepository.getIndividualData(type);
     }
 
-    public double getTotalIncome() {
+    public LiveData<Double> getTotalIncome() {
         return dataRepository.getTotalIncome();
     }
 
-    public double getTotalExpense() {
+    public LiveData<Double> getTotalExpense() {
         return dataRepository.getTotalExpense();
     }
 

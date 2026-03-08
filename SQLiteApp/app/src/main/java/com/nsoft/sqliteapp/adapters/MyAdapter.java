@@ -4,11 +4,11 @@ import android.app.AlertDialog;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
+import androidx.core.content.ContextCompat;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.nsoft.sqliteapp.R;
@@ -34,14 +34,12 @@ public class MyAdapter extends RecyclerView.Adapter<MyAdapter.MyViewHolder> {
 
     public class MyViewHolder extends RecyclerView.ViewHolder {
         TextView amountTextView, reasonTextView, timeTextView;
-        ImageView typeImageView;
 
         public MyViewHolder(@NonNull View itemView) {
             super(itemView);
             amountTextView = itemView.findViewById(R.id.amountTextView);
             reasonTextView = itemView.findViewById(R.id.reasonTextView);
             timeTextView = itemView.findViewById(R.id.timeTextView);
-            typeImageView = itemView.findViewById(R.id.typeImageView);
         }
     }
 
@@ -56,15 +54,18 @@ public class MyAdapter extends RecyclerView.Adapter<MyAdapter.MyViewHolder> {
     public void onBindViewHolder(@NonNull MyViewHolder holder, int position) {
         ExpenseModel expenseModel = expenseModelList.get(position);
 
-        holder.amountTextView.setText("" + expenseModel.getAmount());
+        String bdt_icon = holder.itemView.getContext().getString(R.string.bdt_icon);
+
         holder.reasonTextView.setText(expenseModel.getReason());
         holder.timeTextView.setText("Time: " + expenseModel.getTime());
 
         String type = expenseModel.getType();
         if (type.equals("expense")) {
-            holder.typeImageView.setImageResource(R.drawable.chevron_down_64);
+            holder.amountTextView.setText("+" + bdt_icon + expenseModel.getAmount());
+            holder.amountTextView.setTextColor(ContextCompat.getColor(holder.itemView.getContext(), R.color.dark_green));
         } else {
-            holder.typeImageView.setImageResource(R.drawable.chevron_up_64);
+            holder.amountTextView.setText("-" + bdt_icon + expenseModel.getAmount());
+            holder.amountTextView.setTextColor(ContextCompat.getColor(holder.itemView.getContext(), R.color.dark_red));
         }
 
         holder.itemView.setOnLongClickListener(v -> {

@@ -11,7 +11,17 @@
         android:title="Lists" />
 
     <item
+        android:id="@+id/navAdd"
+        android:icon="@drawable/add"
+        android:title="Add" />
+
+    <item
         android:id="@+id/navAnalytics"
         android:icon="@drawable/analytics_24"
         android:title="Analytics" />
+
+    <item
+        android:id="@+id/navSettings"
+        android:icon="@drawable/settings"
+        android:title="Settings" />
 </menu>
