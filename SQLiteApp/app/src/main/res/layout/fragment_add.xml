@@ -1,0 +1,180 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/light_gray"
+    tools:context=".ui.fragments.AddFragment">
+
+    <RelativeLayout
+        android:id="@+id/topSection"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_margin="20dp">
+
+
+        <ImageView
+            android:id="@+id/backArrow"
+            android:layout_width="24dp"
+            android:layout_height="24dp"
+            android:layout_centerVertical="true"
+            android:src="@drawable/left_arrow" />
+
+        <TextView
+            android:id="@+id/inputTitle"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerVertical="true"
+            android:layout_marginStart="10dp"
+            android:layout_toRightOf="@id/backArrow"
+            android:gravity="center"
+            android:text="Add Expense"
+            android:textColor="@color/dark_primary"
+            android:textSize="25sp"
+            android:textStyle="bold" />
+
+
+        <TextView
+            android:id="@+id/dropDown"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentEnd="true"
+            android:layout_centerVertical="true"
+            android:background="@drawable/spinner_background"
+            android:paddingHorizontal="20dp"
+            android:paddingVertical="5dp"
+            android:text="Expense"
+            android:textColor="@color/black"
+            android:textSize="18sp" />
+
+
+    </RelativeLayout>
+
+    <LinearLayout
+        android:id="@+id/dropdownPopupWindow"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/topSection"
+        android:layout_alignParentEnd="true"
+        android:layout_marginTop="-15dp"
+        android:layout_marginEnd="20dp"
+        android:background="@drawable/dropdown_popup_background"
+        android:elevation="10dp"
+        android:orientation="vertical"
+        android:padding="10dp"
+        android:visibility="gone">
+
+        <TextView
+            android:id="@+id/dropdownExpense"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:padding="5dp"
+            android:text="Expense"
+            android:textColor="@color/black"
+            android:textSize="18dp" />
+
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="0.5dp"
+            android:background="@color/black" />
+
+        <TextView
+            android:id="@+id/dropdownIncome"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:padding="5dp"
+            android:text="Income"
+            android:textColor="@color/black"
+            android:textSize="18dp" />
+
+    </LinearLayout>
+
+    <LinearLayout
+        android:id="@+id/amountLayout"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/topSection"
+        android:layout_margin="10dp"
+        android:background="@drawable/add_edittext_layout_background"
+        android:orientation="vertical"
+        android:padding="20dp">
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Amount"
+            android:textColor="@color/black"
+            android:textSize="16sp" />
+
+
+        <EditText
+            android:id="@+id/amountEditText"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_marginTop="8dp"
+            android:background="@android:color/transparent"
+            android:hint="৳5,000"
+            android:includeFontPadding="false"
+            android:inputType="numberDecimal"
+            android:paddingVertical="5dp"
+            android:textColor="@color/black"
+            android:textColorHint="@color/gray"
+            android:textSize="25sp" />
+
+
+    </LinearLayout>
+
+    <LinearLayout
+        android:id="@+id/reasonLayout"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/amountLayout"
+        android:layout_margin="10dp"
+        android:background="@drawable/add_edittext_layout_background"
+        android:orientation="vertical"
+        android:padding="20dp">
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Reason"
+            android:textColor="@color/black"
+            android:textSize="16sp" />
+
+
+        <EditText
+            android:id="@+id/reasonEditText"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_marginTop="8dp"
+            android:background="@android:color/transparent"
+            android:hint="Salary"
+            android:includeFontPadding="false"
+            android:inputType="text"
+            android:paddingVertical="5dp"
+            android:textColor="@color/black"
+            android:textColorHint="@color/gray"
+            android:textSize="25sp" />
+
+
+    </LinearLayout>
+
+
+    <Button
+        android:id="@+id/addButton"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/reasonLayout"
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="20dp"
+        android:backgroundTint="@color/dark_primary"
+        android:paddingHorizontal="50dp"
+        android:paddingVertical="12dp"
+        android:text="Add"
+        android:textColor="@color/white"
+        android:textSize="20sp"
+        app:cornerRadius="5dp" />
+
+
+</RelativeLayout>

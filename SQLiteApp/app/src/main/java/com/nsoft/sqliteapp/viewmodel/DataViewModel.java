@@ -44,4 +44,8 @@ public class DataViewModel extends AndroidViewModel {
         return dataRepository.getTotalExpense();
     }
 
+    public LiveData<List<ExpenseModel>> getFilteredData(String type, String keyword) {
+        return dataRepository.getFilteredData(type, keyword);
+    }
+
 }

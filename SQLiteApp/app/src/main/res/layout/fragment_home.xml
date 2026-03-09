@@ -1,0 +1,190 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    tools:context=".ui.fragments.HomeFragment">
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="250dp">
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_above="@id/tvTotal"
+            android:layout_centerHorizontal="true"
+            android:text="Current balance"
+            android:textColor="@color/white"
+            android:textSize="16sp" />
+
+        <TextView
+            android:id="@+id/tvTotal"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentBottom="true"
+            android:layout_centerInParent="true"
+            android:layout_marginBottom="50dp"
+            android:text="0"
+            android:textColor="@color/white"
+            android:textSize="40sp"
+            android:textStyle="bold" />
+
+        <ImageView
+            android:layout_width="35dp"
+            android:layout_height="35dp"
+            android:layout_alignParentRight="true"
+            android:layout_margin="30dp"
+            android:background="@drawable/circle"
+            android:backgroundTint="@color/white"
+            android:padding="7dp"
+            android:src="@drawable/notification" />
+
+    </RelativeLayout>
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_weight="1"
+        android:background="@drawable/top_curve_background"
+        android:orientation="vertical"
+        android:paddingTop="10dp">
+
+        <TextView
+            android:id="@+id/tvYourMoney"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginVertical="15dp"
+            android:layout_marginStart="20dp"
+            android:text="Your money"
+            android:textColor="@color/black"
+            android:textSize="20sp"
+            android:textStyle="bold" />
+
+        <LinearLayout
+            android:id="@+id/middleSection"
+            android:layout_width="match_parent"
+            android:layout_height="150dp"
+            android:layout_marginTop="50dp"
+            android:orientation="horizontal">
+
+            <RelativeLayout
+                android:layout_width="0dp"
+                android:layout_height="match_parent"
+                android:layout_margin="10dp"
+                android:layout_weight="1"
+                android:background="@drawable/square_item_background"
+                android:gravity="center_vertical"
+                android:paddingHorizontal="20dp">
+
+                <TextView
+                    android:id="@+id/tvIncomeTitle"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Income"
+                    android:textColor="@color/black"
+                    android:textSize="14sp" />
+
+                <TextView
+                    android:id="@+id/tvTotalIncome"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_below="@id/tvIncomeTitle"
+                    android:text="$5,200"
+                    android:textColor="@color/black"
+                    android:textSize="22sp"
+                    android:textStyle="bold" />
+
+                <ImageView
+                    android:id="@+id/incomeImage"
+                    android:layout_width="50dp"
+                    android:layout_height="50dp"
+                    android:layout_alignParentEnd="true"
+                    android:src="@drawable/increase"
+                    app:tint="@color/dark_green" />
+
+            </RelativeLayout>
+
+
+            <RelativeLayout
+                android:layout_width="0dp"
+                android:layout_height="match_parent"
+                android:layout_margin="10dp"
+                android:layout_weight="1"
+                android:background="@drawable/square_item_background"
+                android:gravity="center_vertical"
+                android:paddingHorizontal="20dp">
+
+
+                <TextView
+                    android:id="@+id/tvExpenseTitle"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Expense"
+                    android:textColor="@color/black"
+                    android:textSize="14sp" />
+
+                <TextView
+                    android:id="@+id/tvTotalExpense"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_below="@id/tvExpenseTitle"
+                    android:text="$5,200"
+                    android:textColor="@color/black"
+                    android:textSize="22sp"
+                    android:textStyle="bold" />
+
+
+                <ImageView
+                    android:id="@+id/expenseImage"
+                    android:layout_width="50dp"
+                    android:layout_height="50dp"
+                    android:layout_alignParentEnd="true"
+                    android:src="@drawable/decrease"
+                    app:tint="@color/dark_red" />
+
+            </RelativeLayout>
+
+
+        </LinearLayout>
+
+        <TextView
+            android:id="@+id/tvTransactions"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/middleSection"
+            android:layout_marginStart="20dp"
+            android:layout_marginTop="20dp"
+            android:layout_marginBottom="10dp"
+            android:text="Transactions"
+            android:textColor="@color/black"
+            android:textSize="20sp"
+            android:textStyle="bold" />
+
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/middleSection"
+            android:layout_alignParentRight="true"
+            android:layout_marginTop="20dp"
+            android:layout_marginEnd="20dp"
+            android:layout_marginBottom="10dp"
+            android:background="@drawable/rectangle_item_background"
+            android:paddingHorizontal="10dp"
+            android:paddingVertical="5dp"
+            android:text="Details"
+            android:textColor="@color/black"
+            android:textSize="14sp" />
+
+        <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/dashboardRecyclerView"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/tvTransactions" />
+
+    </RelativeLayout>
+
+</LinearLayout>

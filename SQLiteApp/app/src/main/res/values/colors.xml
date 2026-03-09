@@ -13,4 +13,6 @@
 
     <color name="dark_green">#239e02</color>
     <color name="dark_red">#9e0202</color>
+
+    <color name="light_gray">#F0F0F0</color>
 </resources>

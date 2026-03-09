@@ -20,10 +20,11 @@ public class DataRepository extends SQLiteOpenHelper {
     private static final String TAG = "My_DATABASE";
     private static final String DB_NAME = "MY_DATABASE";
     private static final int DB_VERSION = 1;
-    
+
     private static DataRepository instance;
-    
+
     private final MutableLiveData<List<ExpenseModel>> allLiveData = new MutableLiveData<>();
+    private final MutableLiveData<List<ExpenseModel>> filteredLiveData = new MutableLiveData<>();
     private final MutableLiveData<List<ExpenseModel>> individualLiveData = new MutableLiveData<>();
     private final MutableLiveData<Double> totalIncomeLiveData = new MutableLiveData<>();
     private final MutableLiveData<Double> totalExpenseLiveData = new MutableLiveData<>();
@@ -34,7 +35,7 @@ public class DataRepository extends SQLiteOpenHelper {
         fetchTotalIncome();
         fetchTotalExpense();
     }
-    
+
     public static synchronized DataRepository getInstance(Context context) {
         if (instance == null) {
             instance = new DataRepository(context.getApplicationContext());
@@ -182,5 +183,26 @@ public class DataRepository extends SQLiteOpenHelper {
         return individualLiveData;
     }
 
+    public LiveData<List<ExpenseModel>> getFilteredData(String type, String keyword) {
+        List<ExpenseModel> sourceList;
+        if (type.equals("all")) {
+            sourceList = allLiveData.getValue();
+        } else {
+            fetchIndividualData(type);
+            sourceList = individualLiveData.getValue();
+        }
 
+        List<ExpenseModel> filteredList = new ArrayList<>();
+        if (sourceList != null) {
+            String lowerKeyword = keyword.toLowerCase().trim();
+            for (ExpenseModel item : sourceList) {
+                if (item.getReason().toLowerCase().contains(lowerKeyword) || 
+                    String.valueOf(item.getAmount()).contains(lowerKeyword)) {
+                    filteredList.add(item);
+                }
+            }
+        }
+        filteredLiveData.setValue(filteredList);
+        return filteredLiveData;
+    }
 }
