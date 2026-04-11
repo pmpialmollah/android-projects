@@ -1,4 +1,4 @@
-package com.nsoft.mybakery;
+package com.nsoft.mybakery.adapters;
 
 import android.content.Context;
 import android.view.LayoutInflater;
@@ -9,6 +9,9 @@ import android.widget.TextView;
 
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
+
+import com.nsoft.mybakery.models.Customer;
+import com.nsoft.mybakery.R;
 
 import java.util.List;
 

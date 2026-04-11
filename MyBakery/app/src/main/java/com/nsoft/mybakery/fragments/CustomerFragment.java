@@ -1,4 +1,4 @@
-package com.nsoft.mybakery;
+package com.nsoft.mybakery.fragments;
 
 import android.app.AlertDialog;
 import android.database.Cursor;
@@ -18,7 +18,12 @@ import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.LinearLayoutManager;
 
+import com.nsoft.mybakery.models.Customer;
+import com.nsoft.mybakery.adapters.CustomerRecyclerViewAdapter;
+import com.nsoft.mybakery.adapterdecorators.ProductItemSpacingDecorator;
+import com.nsoft.mybakery.R;
 import com.nsoft.mybakery.databinding.FragmentCustomerBinding;
+import com.nsoft.mybakery.sqlitedatabase.DBHelper;
 
 import java.util.ArrayList;
 import java.util.List;

@@ -1,4 +1,4 @@
-package com.nsoft.mybakery;
+package com.nsoft.mybakery.adapters;
 
 import android.view.LayoutInflater;
 import android.view.View;
@@ -8,6 +8,9 @@ import android.widget.TextView;
 
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
+
+import com.nsoft.mybakery.models.Product;
+import com.nsoft.mybakery.R;
 
 import java.util.List;
 
@@ -49,7 +52,7 @@ public class DialogProductRecyclerviewAdapter extends RecyclerView.Adapter<Dialo
     public void onBindViewHolder(@NonNull MyViewHolder holder, int position) {
         Product product = productList.get(position);
 
-        holder.productNameTextView.setText(product.getName());
+//        holder.productNameTextView.setText(product.name);
 
         viewHolderInterface.viewHolder(holder, product);
     }

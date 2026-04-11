@@ -1,4 +1,4 @@
-package com.nsoft.mybakery;
+package com.nsoft.mybakery.models;
 
 public class ProductSell {
     private int itemCount;

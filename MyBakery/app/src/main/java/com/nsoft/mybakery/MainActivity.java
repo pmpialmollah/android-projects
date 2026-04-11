@@ -9,6 +9,10 @@ import androidx.core.view.ViewCompat;
 import androidx.core.view.WindowInsetsCompat;
 
 import com.nsoft.mybakery.databinding.ActivityMainBinding;
+import com.nsoft.mybakery.fragments.CustomerFragment;
+import com.nsoft.mybakery.fragments.HomeFragment;
+import com.nsoft.mybakery.fragments.ProductsFragment;
+import com.nsoft.mybakery.fragments.ToolsFragment;
 
 public class MainActivity extends AppCompatActivity {
     private ActivityMainBinding binding;
