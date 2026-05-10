@@ -39,10 +39,15 @@ class ProductRecyclerViewAdapter(private val clickListener: ClickListener) :
         val product = productList[position]
 
         holder.productNameTextView.text = product.name
-        holder.productPriceTextView.text = product.price
+        holder.productPriceTextView.text = "${product.price}"
 
         holder.productDeleteImageView.setOnClickListener {
             clickListener.onDeleteClickListener(product)
+        }
+
+        holder.itemView.setOnLongClickListener {
+            clickListener.onItemLongClick(product)
+            return@setOnLongClickListener true
         }
     }
 
@@ -52,5 +57,6 @@ class ProductRecyclerViewAdapter(private val clickListener: ClickListener) :
 
     interface ClickListener {
         fun onDeleteClickListener(product: Product)
+        fun onItemLongClick(product: Product)
     }
 }

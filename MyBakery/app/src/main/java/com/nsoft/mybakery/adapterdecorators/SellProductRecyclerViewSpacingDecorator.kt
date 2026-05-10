@@ -5,7 +5,7 @@ import android.view.View
 import androidx.recyclerview.widget.RecyclerView
 import androidx.recyclerview.widget.RecyclerView.ItemDecoration
 
-class ProductItemSpacingDecorator : ItemDecoration() {
+class SellProductRecyclerViewSpacingDecorator : ItemDecoration() {
     override fun getItemOffsets(
         outRect: Rect,
         view: View,
@@ -18,17 +18,13 @@ class ProductItemSpacingDecorator : ItemDecoration() {
 
         val margin = 20
 
-        outRect.left = margin
+        outRect.top = margin
         outRect.right = margin
 
-        if (position == parent.adapter?.itemCount?.minus(1)) {
-            outRect.bottom = 220
-        } else {
-            outRect.bottom = margin
-        }
+        outRect.bottom = margin
 
         if (position == 0) {
-            outRect.top = margin
+            outRect.left = margin
         }
     }
 }
